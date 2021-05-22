@@ -6,19 +6,13 @@ public class BlockSelection : MonoBehaviour
 {
     public RectTransform selectionBox;
     public Vector2 startPos;
-    bool selecting;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             startPos = Input.mousePosition;
+           
         }
         if (Input.GetMouseButton(0))
         {
@@ -26,10 +20,23 @@ public class BlockSelection : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
-
+            ReleaseSelection();
         }
     }
-
+    void ReleaseSelection()
+    {
+        selectionBox.gameObject.SetActive(false);
+        Vector2 min = selectionBox.anchoredPosition - (selectionBox.sizeDelta / 2);
+        Vector2 max = selectionBox.anchoredPosition + (selectionBox.sizeDelta / 2);
+        foreach(Transform t in transform)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(t.position);
+            if (screenPos.x > min.x && screenPos.x < max.x && screenPos.y > min.y && screenPos.y < max.y)
+            {
+                t.GetComponent<Block>().alive = 1;
+            }
+        }
+    }
     void UpdateSelectionBox(Vector2 pos)
     {
         if (!selectionBox.gameObject.activeInHierarchy)
@@ -38,5 +45,7 @@ public class BlockSelection : MonoBehaviour
         }
         float width = pos.x - startPos.x;
         float height = pos.y - startPos.y;
+        selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
+        selectionBox.anchoredPosition = startPos+new Vector2(width/2,height/2);
     }
 }
