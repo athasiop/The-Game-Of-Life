@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameOfLife : MonoBehaviour
 {
@@ -8,6 +10,7 @@ public class GameOfLife : MonoBehaviour
     GameObject block;
     [SerializeField]
     Vector2 gridSize;
+    public InputField inputField;
     
     public float rate = 1f;
     // Start is called before the first frame update
@@ -26,5 +29,12 @@ public class GameOfLife : MonoBehaviour
             t.GetComponent<Block>().alive = 0;
         }
     }
-    
+    public void ChangeRate()
+    {
+        if (float.TryParse(inputField.text,out float result))
+        {
+            rate = result;
+        }       
+        inputField.text = "";
+    }
 }

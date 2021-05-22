@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BlockSelection : MonoBehaviour
 {
     public RectTransform selectionBox;
     public Vector2 startPos;
-
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             startPos = Input.mousePosition;
-           
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(startPos),out RaycastHit hit))
+            {
+                hit.transform.GetComponent<Block>().alive = 1;
+            }
         }
         if (Input.GetMouseButton(0))
         {
