@@ -8,17 +8,18 @@ public class Block : MonoBehaviour
     Renderer ren;
     float timer=1f;
     bool moveGen = false;
-    List<Transform> neighbours = new List<Transform>();
+    List<Transform> neighbors = new List<Transform>();
     private void Awake()
     {
         ren = GetComponent<Renderer>();
     }
     private void Start()
     {
-        Collider[] col = Physics.OverlapBox(transform.position, new Vector3(1.2f, 1.2f, 1.2f));
+        Collider[] col = Physics.OverlapBox(transform.position, new Vector3(.6f, .6f, .6f));
         foreach(Collider c in col)
         {
-            neighbours.Add(c.transform);
+            if (c.transform == transform) continue;
+            neighbors.Add(c.transform);
         }
     }
     private void Update()
@@ -46,7 +47,7 @@ public class Block : MonoBehaviour
     {
         
         int countAlive = 0;
-        foreach(Transform t in neighbours)
+        foreach(Transform t in neighbors)
         {
             if (t.transform.GetComponent<Block>().alive == 1)
             {
